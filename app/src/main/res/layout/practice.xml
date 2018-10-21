@@ -45,7 +45,7 @@
     <TableLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/line"
         android:layout_above="@+id/bottom_relativelayout"
         android:orientation="vertical">
@@ -54,42 +54,41 @@
 
     <RelativeLayout
         android:id="@+id/bottom_relativelayout"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
         <Button
             android:id="@+id/profile_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_alignParentStart="true"
             android:text="Profile" />
 
         <Button
             android:id="@+id/repositories_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_toStartOf="@id/followers_button"
+            android:layout_toEndOf="@id/profile_button"
             android:text="Repository" />
 
         <Button
             android:id="@+id/followers_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_toStartOf="@+id/following_button"
             android:text="Followers" />
 
         <Button
             android:id="@+id/following_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginEnd="0dp"
+            android:layout_alignParentEnd="true"
             android:text="Following" />
-    </LinearLayout>
 
     </RelativeLayout>
 
