@@ -12,9 +12,9 @@ import android.webkit.WebViewClient;
 
 /**
  * A simple {@link Fragment} subclass.
+ * provide detailed contents of each repository
  */
 public class RepositoryDetailFragment extends Fragment {
-    public String webUrl = "https://github.com/sophiesummer/donation-analytics";
 
     public RepositoryDetailFragment() {
         // Required empty public constructor
@@ -24,9 +24,9 @@ public class RepositoryDetailFragment extends Fragment {
      * a constructor with arguments.
      * @return a new ReportDetailFragment
      */
-    public static RepositoryDetailFragment newInstance() {
+    public static RepositoryDetailFragment newInstance(String url) {
         Bundle args = new Bundle(); // get in url
-
+        args.putString("repo_detail_url", url);
         RepositoryDetailFragment fragment = new RepositoryDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -38,10 +38,13 @@ public class RepositoryDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_report_detail, container, false);
-        WebView webView = (WebView)view.findViewById(R.id.web_view);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(webUrl);
+        if (getArguments() != null) {
+            WebView webView = (WebView) view.findViewById(R.id.web_view);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient());
+            String url = getArguments().getString("repo_detail_url");
+            webView.loadUrl(url);
+        }
         return view;
     }
 

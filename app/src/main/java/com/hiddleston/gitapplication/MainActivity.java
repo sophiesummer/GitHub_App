@@ -17,6 +17,9 @@ import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
 
+/**
+ * front page activity of whole app
+ */
 public class MainActivity extends AppCompatActivity implements RepositoryFragment.OnItemSelectListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -64,19 +67,15 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
             followingFragment = new FollowingFragment();
         }
 
-
-        repositoryDetailFragment = new RepositoryDetailFragment();  //put in a url
-        Log.d(TAG, "reach detail");
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.content_layout, repositoryDetailFragment).commit();
-
-//        getSupportFragmentManager().beginTransaction().
-//                replace(R.id.content_layout, profileFragment).commit();
+                replace(R.id.content_layout, profileFragment).commit();
 
         profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.content_layout, profileFragment).commit();
             }
@@ -86,8 +85,40 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         repositoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.content_layout, repositoryFragment).commit();
+                // call REST API for repo info
+                AsyncTask asyncTask = new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        OkHttpClient client = new OkHttpClient();
+
+                        String url = defaultUser.repoUrl;
+                        Request request = new Request.Builder().url(url).
+                                header("User-Agent", "sophiesummer").
+                                build();
+                        Response response = null;
+                        try {
+                            response = client.newCall(request).execute();
+                            return response.body().string();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        try {
+                            repositoryFragment = new RepositoryFragment().newInstance(o.toString());
+                            getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.content_layout, repositoryFragment).commit();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.print(o.toString());
+                    }
+                }.execute();
+
+
             }
         });
 
@@ -118,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
             @Override
             public void onClick(View v) {
 
+                // call REST API for user info
                 AsyncTask asyncTask = new AsyncTask() {
                     @Override
                     protected Object doInBackground(Object[] objects) {
@@ -159,14 +191,21 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         });
     }
 
+    /**
+     * create RepositoryDetailFragment to display repo web page.
+     * @param position the index of list view
+     * @param url the url of the repository web page.
+     */
     @Override
-    public void onItemSelected(int position) {
-        repositoryDetailFragment = new RepositoryDetailFragment();  //put in a url
-        Log.d(TAG, "reach detail");
+    public void onItemSelected(int position, String url) {
+        repositoryDetailFragment = new RepositoryDetailFragment().newInstance(url);  //put in a url
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.content_layout, repositoryDetailFragment).commit();
     }
 
+    /*
+     * set count number of repo, followers, following on button.
+     */
     public void setCount() {
         String buttonTextRepo = "Repository:\n" + defaultUser.repo_count;
         repositoryButton.setText(buttonTextRepo);
@@ -174,11 +213,14 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         followersButton.setText(buttonTextFollowers);
         String buttonTextFollowing = "Following:\n" + defaultUser.following;
         followingButton.setText(buttonTextFollowing);
-
     }
 
+    /*
+     * update profilefragment with arguments.
+     */
     public void setFragment() {
         profileFragment = new ProfileFragment().newInstance(defaultUser);
-
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.content_layout, profileFragment).commit();
     }
 }

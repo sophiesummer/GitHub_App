@@ -14,7 +14,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
-
+/**
+ * Helper class, manage transfering json data to object data
+ */
 public class APIUtil {
     public static JSONObject jsonResult;
 
@@ -49,6 +51,11 @@ public class APIUtil {
         return jsonObject;
     }
 
+    /**
+     * transfer JSONObject data to User object
+     * @param jsonResult the result from API call
+     * @return a new User
+     */
     public static User getUser(JSONObject jsonResult) {
         User user = new User();
         try {
@@ -66,6 +73,5 @@ public class APIUtil {
         }
         return user;
     }
-
 
 }

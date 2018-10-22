@@ -9,13 +9,21 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Customer Adapter to put each repo info to list view.
+ */
 public class RepositoryAdapter extends BaseAdapter {
     List<Repository> repoData;
     Context context;
 
-    public RepositoryAdapter(Context context) {
+    /**
+     * Adapter constructor
+     * @param context main activity
+     * @param repo_json a string format of JSONArray repository info
+     */
+    public RepositoryAdapter(Context context, String repo_json) {
         this.context = context;
-        repoData = DataService.getRepoData(); // change Data Service
+        repoData = Repository.getRepository(repo_json); // change Data Service
     }
 
     @Override

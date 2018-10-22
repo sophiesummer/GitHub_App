@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
+ * present user info on screen
  */
 public class ProfileFragment extends Fragment {
 
@@ -24,6 +25,11 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * constructor with parameter
+     * @param user a user object constructed from API information
+     * @return a new fragment shows the user info
+     */
     public static ProfileFragment newInstance(User user) {
 
         Bundle args = new Bundle();
