@@ -13,12 +13,15 @@
         android:id="@+id/relativelayout_searchBar"
         >
 
-        <SearchView
-            android:layout_width="match_parent"
+        <EditText
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:id="@+id/search_text"
+            android:layout_marginStart="20dp"
+            android:hint="Search or jump to ..."
             android:layout_toEndOf="@id/img_cat"
-            android:queryHint="Search or jump to ..."
+            android:gravity="center"
             />
 
         <ImageView
@@ -29,6 +32,15 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/search_button"
+            android:text="Search"
             />
 
 
@@ -62,34 +74,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <Button
-            android:id="@+id/profile_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Profile" />
+            <Button
+                android:id="@+id/profile_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Profile" />
 
-        <Button
-            android:id="@+id/repositories_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Repository" />
+            <Button
+                android:id="@+id/repositories_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Repository" />
 
-        <Button
-            android:id="@+id/followers_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Followers" />
+            <Button
+                android:id="@+id/followers_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Followers" />
 
-        <Button
-            android:id="@+id/following_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Following" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/following_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Following" />
+        </LinearLayout>
 
     </RelativeLayout>
 
