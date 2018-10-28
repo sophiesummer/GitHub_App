@@ -16,6 +16,9 @@ public class User implements Serializable{
     public String avatar_url;
     public String create_date;
 
+    public String followers_url;
+    public String following_url;
+
     public int followers;
     public int following;
     public int repo_count;
@@ -57,6 +60,10 @@ public class User implements Serializable{
             user.repoUrl = jsonResult.getString("repos_url");
             user.repo_count = jsonResult.getInt("public_repos");
             user.create_date = jsonResult.getString("created_at").substring(0, 10);
+            user.followers_url = jsonResult.getString("followers_url");
+            String following_url_orig = jsonResult.getString("following_url");
+            int ind = following_url_orig.indexOf('{');
+            user.following_url = following_url_orig.substring(0, ind);
         } catch (Exception e) {
             e.printStackTrace();
         }

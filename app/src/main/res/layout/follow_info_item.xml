@@ -13,39 +13,36 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/repo_name"
+            android:id="@+id/username_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Name"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/user_img"
+            android:layout_marginLeft="5dp"
+            android:text="username"
             android:textSize="18sp"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/user_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             android:focusable="false"
-            android:text="Favorite"
+            android:text="Follow"
             />
-
-        <TextView
-            android:id="@+id/repo_owner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_name"
-            android:text="Owner"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/repo_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_owner"
-            android:text="description"
-            android:textSize="13sp" />
-
 
     </RelativeLayout>
 

@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
     private Button followingButton;
     private Button searchButton;
 
-    private String defaultUserName = "sophiesummer";
+    public String defaultUserName = "sophiesummer";
     private User defaultUser = new User();
 
     private EditText editText;
@@ -46,10 +44,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        JSONObject j = APIUtil.getUserInfo("sophiesummer");
-        User u = APIUtil.getUser(j);
-        Log.d(TAG,"here is json " + u.repoUrl);
 
         if (profileFragment == null) {
             profileFragment = new ProfileFragment();
@@ -67,14 +61,58 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
             followingFragment = new FollowingFragment();
         }
 
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.content_layout, profileFragment).commit();
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                defaultUserName = extras.getString("defaultUsername");
+            }
+        } else {
+            defaultUserName = (String)savedInstanceState.getSerializable("defaultUsername");
+        }
+
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                OkHttpClient client = new OkHttpClient();
+
+                String text = editText.getText().toString();
+                if (text == null) {
+                    text = defaultUserName;
+                }
+                String url = "http://api.github.com/users/" + defaultUserName;
+                Request request = new Request.Builder().url(url).
+                        header("User-Agent", "sophiesummer").
+                        build();
+                Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                    return response.body().string();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                try {
+                    JSONObject jsonObject = new JSONObject(o.toString());
+                    User.transToUser(defaultUser, jsonObject);
+                    setCount();
+                    setFragment();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.print(o.toString());
+            }
+        }.execute();
+
 
         profileButton = findViewById(R.id.profile_button);
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.content_layout, profileFragment).commit();
@@ -126,8 +164,39 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         followersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.content_layout, followersFragment).commit();
+
+                AsyncTask asyncTask = new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        OkHttpClient client = new OkHttpClient();
+
+                        String url = defaultUser.followers_url;
+                        Request request = new Request.Builder().url(url).
+                                header("User-Agent", "sophiesummer").
+                                build();
+                        Response response = null;
+                        try {
+                            response = client.newCall(request).execute();
+                            return response.body().string();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        try {
+                            followersFragment = new FollowersFragment().newInstance(o.toString());
+                            getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.content_layout, followersFragment).commit();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.print(o.toString());
+                    }
+                }.execute();
+
             }
         });
 
@@ -136,8 +205,38 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         followingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.content_layout, followingFragment).commit();
+                AsyncTask asyncTask = new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        OkHttpClient client = new OkHttpClient();
+
+                        String url = defaultUser.following_url;
+                        Request request = new Request.Builder().url(url).
+                                header("User-Agent", "sophiesummer").
+                                build();
+                        Response response = null;
+                        try {
+                            response = client.newCall(request).execute();
+                            return response.body().string();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        try {
+                            followersFragment = new FollowersFragment().newInstance(o.toString());
+                            getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.content_layout, followersFragment).commit();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.print(o.toString());
+                    }
+                }.execute();
+
             }
         });
 

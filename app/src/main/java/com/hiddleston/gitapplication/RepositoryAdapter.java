@@ -13,6 +13,7 @@ import java.util.List;
  * Customer Adapter to put each repo info to list view.
  */
 public class RepositoryAdapter extends BaseAdapter {
+
     List<Repository> repoData;
     Context context;
 
