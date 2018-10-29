@@ -106,10 +106,11 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                     mDatabase.child("users").child(defaultUser.userName).child("userInfo").setValue(defaultUser);
                     setCount();
                     setFragment();
+
+                    System.out.print(o.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.print(o.toString());
             }
         }.execute();
 
@@ -303,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        System.out.print(o.toString());
                     }
                 }.execute();
             }
