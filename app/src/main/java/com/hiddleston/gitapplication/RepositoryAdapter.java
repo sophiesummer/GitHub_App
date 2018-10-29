@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RepositoryAdapter extends BaseAdapter {
 
-    List<Repository> repoData;
+    public List<Repository> repoData;
     Context context;
 
     /**

@@ -17,6 +17,8 @@ import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * front page activity of whole app
  */
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
 
     private EditText editText;
 
-    private DatabaseReference database;
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -74,9 +76,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
             defaultUserName = (String)savedInstanceState.getSerializable("defaultUsername");
         }
 
-        database = FirebaseDatabase.getInstance().getReference();
-
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         AsyncTask asyncTask = new AsyncTask() {
             @Override
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                 try {
                     JSONObject jsonObject = new JSONObject(o.toString());
                     User.transToUser(defaultUser, jsonObject);
+                    mDatabase.child("users").child(defaultUser.userName).child("userInfo").setValue(defaultUser);
                     setCount();
                     setFragment();
                 } catch (Exception e) {
@@ -155,16 +156,18 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                     protected void onPostExecute(Object o) {
                         try {
                             repositoryFragment = new RepositoryFragment().newInstance(o.toString());
+                            List<Repository> repositoriesInfo = Repository.getRepository(o.toString());
+                            for (Repository r : repositoriesInfo) {
+                                mDatabase.child("users").child(defaultUser.userName).child("repositoriesInfo").child(r.repoName).setValue(r);
+                            }
                             getSupportFragmentManager().beginTransaction().
                                     replace(R.id.content_layout, repositoryFragment).commit();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        
+
                     }
                 }.execute();
-
-
             }
         });
 
@@ -196,6 +199,10 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                     protected void onPostExecute(Object o) {
                         try {
                             followersFragment = new FollowersFragment().newInstance(o.toString());
+                            List<FollowInfo> followingInfo = FollowInfo.getFollowInfo(o.toString());
+                            for (FollowInfo f : followingInfo) {
+                                mDatabase.child("users").child(defaultUser.userName).child("followersInfo").child(f.username).setValue(f);
+                            }
                             getSupportFragmentManager().beginTransaction().
                                     replace(R.id.content_layout, followersFragment).commit();
                         } catch (Exception e) {
@@ -236,12 +243,15 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                     protected void onPostExecute(Object o) {
                         try {
                             followersFragment = new FollowersFragment().newInstance(o.toString());
+                            List<FollowInfo> followingInfo = FollowInfo.getFollowInfo(o.toString());
+                            for (FollowInfo f : followingInfo) {
+                                mDatabase.child("users").child(defaultUser.userName).child("followingInfo").child(f.username).setValue(f);
+                            }
                             getSupportFragmentManager().beginTransaction().
                                     replace(R.id.content_layout, followersFragment).commit();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        System.out.print(o.toString());
                     }
                 }.execute();
 
@@ -286,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                         try {
                             JSONObject jsonObject = new JSONObject(o.toString());
                             User.transToUser(defaultUser, jsonObject);
+                            mDatabase.child("users").child(defaultUser.userName).child("userInfo").setValue(defaultUser);
                             setCount();
                             setFragment();
                         } catch (Exception e) {

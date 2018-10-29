@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +20,7 @@ public class FollowersFragment extends Fragment {
 
     private ListView follower_list_view;
     private String json_data;
+    public List<FollowInfo> followInfoList;
 
     public FollowersFragment() {
         // Required empty public constructor
@@ -41,6 +44,7 @@ public class FollowersFragment extends Fragment {
             json_data = getArguments().getString("json_data");
             follower_list_view = (ListView) view.findViewById(R.id.followers_list);
             final FollowersAdapter fa = new FollowersAdapter(getActivity(), json_data);
+            followInfoList = fa.followersData;
             follower_list_view.setAdapter(fa);
 
             follower_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {

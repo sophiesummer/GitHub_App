@@ -30,19 +30,9 @@ public class User implements Serializable{
     public List<FollowInfo> followingList;
 
 
-
-    public Repository repository;
-
-
-    public void setRepoUrl(String repoUrl) {
-        this.repoUrl = repoUrl;
-    }
-
-
     public User() {
 
     }
-
 
     public static void transToUser(User user, JSONObject jsonResult) {
 

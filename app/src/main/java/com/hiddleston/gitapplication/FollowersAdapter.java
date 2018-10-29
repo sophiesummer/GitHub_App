@@ -15,8 +15,8 @@ import java.util.List;
 
 public class FollowersAdapter extends BaseAdapter {
 
-    List<FollowInfo> followersData;
-    Context context;
+    public List<FollowInfo> followersData;
+    public Context context;
 
     public FollowersAdapter(Context context, String follow_json) {
         this.context = context;

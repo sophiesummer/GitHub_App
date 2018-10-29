@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.editTextPassword);
         loginButton = (Button) findViewById(R.id.login_button);
 
-        getRequest();
 
         AsyncTask asyncTask = new AsyncTask() {
             @Override
