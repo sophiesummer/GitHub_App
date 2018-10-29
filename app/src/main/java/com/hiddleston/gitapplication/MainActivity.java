@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
     private User defaultUser = new User();
 
     private EditText editText;
+
+    private DatabaseReference database;
 
 
     @Override
@@ -69,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
         } else {
             defaultUserName = (String)savedInstanceState.getSerializable("defaultUsername");
         }
+
+        database = FirebaseDatabase.getInstance().getReference();
+
+
 
         AsyncTask asyncTask = new AsyncTask() {
             @Override
@@ -152,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        System.out.print(o.toString());
+                        
                     }
                 }.execute();
 
@@ -193,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        System.out.print(o.toString());
+
                     }
                 }.execute();
 

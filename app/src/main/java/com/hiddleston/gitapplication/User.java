@@ -4,6 +4,7 @@ package com.hiddleston.gitapplication;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
 
@@ -22,6 +23,12 @@ public class User implements Serializable{
     public int followers;
     public int following;
     public int repo_count;
+    public String idKey;
+
+    public List<Repository> repos;
+    public List<FollowInfo> followersList;
+    public List<FollowInfo> followingList;
+
 
 
     public Repository repository;
@@ -36,14 +43,6 @@ public class User implements Serializable{
 
     }
 
-    public User(String userName, String realName, String website,
-                String bio, String email) {
-        this.userName = userName;
-        this.realName = realName;
-        this.website = website;
-        this.bio = bio;
-        this.email = email;
-    }
 
     public static void transToUser(User user, JSONObject jsonResult) {
 
@@ -68,4 +67,5 @@ public class User implements Serializable{
             e.printStackTrace();
         }
     }
+
 }
