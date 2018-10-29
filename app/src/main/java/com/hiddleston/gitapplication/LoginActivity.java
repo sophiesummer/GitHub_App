@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private String clientId = "220a7b036754fa4be54d";
     private String clientSecret = "304618e1fb4efd28a6d3cbc669b670c8c4cdddb3";
 
+    private String token = "7ca5a4d8f7829680446089d0ba4d114ee40200a6";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.editTextPassword);
         loginButton = (Button) findViewById(R.id.login_button);
 
-
+/*
         AsyncTask asyncTask = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -108,7 +110,37 @@ public class LoginActivity extends AppCompatActivity {
             }
         }.execute();
 
+*/
 
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                com.squareup.okhttp.OkHttpClient client = new com.squareup.okhttp.OkHttpClient();
+
+                String url = "https://api.github.com/?access_token=" + token;
+                com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder().url(url).
+                        header("User-Agent", "sophiesummer").
+                        build();
+                com.squareup.okhttp.Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                    return response.body().string();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                try {
+                    Log.d("token", o.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 

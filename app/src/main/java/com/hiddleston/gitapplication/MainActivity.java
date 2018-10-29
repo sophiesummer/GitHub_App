@@ -83,10 +83,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
             protected Object doInBackground(Object[] objects) {
                 OkHttpClient client = new OkHttpClient();
 
-                String text = editText.getText().toString();
-                if (text == null) {
-                    text = defaultUserName;
-                }
                 String url = "http://api.github.com/users/" + defaultUserName;
                 Request request = new Request.Builder().url(url).
                         header("User-Agent", "sophiesummer").
@@ -158,7 +154,12 @@ public class MainActivity extends AppCompatActivity implements RepositoryFragmen
                             repositoryFragment = new RepositoryFragment().newInstance(o.toString());
                             List<Repository> repositoriesInfo = Repository.getRepository(o.toString());
                             for (Repository r : repositoriesInfo) {
-                                mDatabase.child("users").child(defaultUser.userName).child("repositoriesInfo").child(r.repoName).setValue(r);
+                                String repoTag = r.repoName.replaceAll("\\.|#|\\[\\]|\\$","");
+                                if (repoTag != null) {
+                                    mDatabase.child("users").child(defaultUser.userName).child("repositoriesInfo").child(repoTag).setValue(r);
+                                } else {
+                                    mDatabase.child("users").child(defaultUser.userName).child("repositoriesInfo").child("  ").setValue(r);
+                                }
                             }
                             getSupportFragmentManager().beginTransaction().
                                     replace(R.id.content_layout, repositoryFragment).commit();
